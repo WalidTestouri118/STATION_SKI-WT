@@ -1,8 +1,6 @@
 package com.SKI.TP.esprit.Controllers;
 
-import com.SKI.TP.esprit.Entities.Cours;
-import com.SKI.TP.esprit.Entities.Inscription;
-import com.SKI.TP.esprit.Entities.Skieur;
+import com.SKI.TP.esprit.Entities.*;
 import com.SKI.TP.esprit.Repositories.InscriptionRepository;
 import com.SKI.TP.esprit.Repositories.SkieurRepository;
 import com.SKI.TP.esprit.services.ISkieurService;
@@ -77,21 +75,19 @@ public class SkieurController {
     }
 
 
-    @PostMapping("")
-    public Skieur addSkierAndAssignToCourse(Skieur skieur){
-        assert.notnull(skieur.getabonnement(),"abonnement must be entered");
-        assert.notNull(skieur.getinscription(),"inscription must be entered");
-        Set<Inscription> inscriptions=skieur.getInscriptions();
-        inscriptions.forEach(inscription -> {
-            assert.notNull(inscription.getCours().getNumCours(), "cour must be entered");
-            Cours cours=coursRepository.findbyid(inscription.getCours().getNumCours().orElse(null))
-            assert.notNull(cours,"no coutr found with this is !!!!!");
-            inscriptions.setCours(cours);
-            SkieurRepository.saveAndFlush(skieur);
-            inscription.setSkieur(skieur);
-            InscriptionRepository.Save(inscription);
-        });
+    @PostMapping("addSkierAndAssignToCourse")
+    Skieur addSkierAndAssignToCourse(@RequestBody Skieur skieur){
+        return iSkieurService.addSkierAndAssignToCourse(skieur);
+    }
 
-        return skieur;
+    @GetMapping("getSkieurParTypeAbon/{type}")
+    public List<Skieur> getSkieurParTypeAbon(@PathVariable TypeAbonnement type){
+        return  iSkieurService.retrieveSkiersBySubscriptionType(type);
+    }
+
+    @GetMapping("findByNameAndSupport/{support}/{nom}")
+    public List<Skieur> findByMoniteurNameAndSupportTypeJPQL(@PathVariable Support support, @PathVariable String nom) {
+        return iSkieurService.findByMoniteurNameAndSupportTypeJPQL(support, nom);
+        //r
     }
 }

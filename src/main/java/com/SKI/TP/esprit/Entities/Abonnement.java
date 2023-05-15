@@ -18,6 +18,5 @@ public class Abonnement {
     LocalDate dateFin;
     float prixAbon;
     @Enumerated(EnumType.STRING)
-
     TypeAbonnement typeAbon;
 }

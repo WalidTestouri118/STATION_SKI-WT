@@ -1,10 +1,13 @@
 package com.SKI.TP.esprit.Controllers;
 
 import com.SKI.TP.esprit.Entities.Abonnement;
+import com.SKI.TP.esprit.Entities.TypeAbonnement;
 import com.SKI.TP.esprit.services.IAbonnementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +45,16 @@ public class AbonnementController {
 
         return  iAbonnementService.updateAbonnement(abonnement);
 
+    }
+
+    @GetMapping("abParType/{tp}")
+    public List<Abonnement> getAbonParType(@PathVariable TypeAbonnement tp){
+        return  iAbonnementService.getSubParType(tp);
+    }
+
+    @GetMapping("abParDate/{dateDebut}/{dateFin}")
+    public List<Abonnement>getAbonParDate (@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateDebut, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFin){
+        return  iAbonnementService.retrieveSubscriptionsByDates(dateDebut,dateFin);
     }
 }
 

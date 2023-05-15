@@ -1,10 +1,12 @@
 package com.SKI.TP.esprit.services;
 
 import com.SKI.TP.esprit.Entities.Abonnement;
+import com.SKI.TP.esprit.Entities.TypeAbonnement;
 import com.SKI.TP.esprit.Repositories.AbonnementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +37,14 @@ public class IAbonnementIMP implements IAbonnementService{
     @Override
     public void removeAbonnement(Long numAbon) {
         abonnementRepository.deleteById(numAbon);
+    }
+
+    @Override
+    public List<Abonnement> getSubParType(TypeAbonnement typeAbonnement){
+        return abonnementRepository.findByTypeAbon(typeAbonnement);
+    }
+    @Override
+    public List<Abonnement> retrieveSubscriptionsByDates(LocalDate dateDebut, LocalDate dateFin){
+        return  abonnementRepository.findAbonnementByDateDebutAndDateFin(dateDebut,dateFin);
     }
 }
